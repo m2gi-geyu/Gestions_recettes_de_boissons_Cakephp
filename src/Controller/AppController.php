@@ -49,5 +49,17 @@ class AppController extends Controller
          * see https://book.cakephp.org/4/en/controllers/components/form-protection.html
          */
         //$this->loadComponent('FormProtection');
+		
+		$this->loadComponent('Authentication.Authentication');
     }
+	
+	public function beforeFilter(\Cake\Event\EventInterface $event)
+	{
+		parent::beforeFilter($event);
+		
+		// Ajoutez la méthode beforeFilter au UsersController
+		$this->Authentication->addUnauthenticatedActions(['login','vue','index']);
+	}
+	
+
 }

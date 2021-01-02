@@ -91,8 +91,8 @@ class SqlDB{
 		}	
 	
 		//create table
-		$Sql .= 'CREATE TABLE Recettes (num_recette INT NOT NULL,titre VARCHAR(255) NOT NULL,ingredients VARCHAR(255) NOT NULL,preparation TEXT ,pre_index INT NOT NULL,sous_recettes  VARCHAR(255) NOT NULL );' ;
-		$Sql .= 'CREATE TABLE Prefers (num_recette INT NOT NULL,titre VARCHAR(255) NOT NULL,num_prefers INT);' ;
+		$Sql .= 'CREATE TABLE Recettes (id INT NOT NULL,titre VARCHAR(255) NOT NULL,ingredients VARCHAR(255) NOT NULL,preparation TEXT ,pre_index INT NOT NULL,sous_recettes  VARCHAR(255) NOT NULL );' ;
+		$Sql .= 'CREATE TABLE Prefers (id INT NOT NULL,titre VARCHAR(255) NOT NULL,idRecette INT);' ;
 		
 		//array Recettes
 		foreach($Recettes as $index=>$contenu_recettes){
@@ -109,9 +109,12 @@ class SqlDB{
 				
 				//inserer table
 				$Sql .= "INSERT INTO Recettes VALUES ('$index','$titre','$ingredients','$preparation','$pre_index','$sous_recettes');";
-				$Sql .= "INSERT INTO Prefers (num_recette,titre) VALUES ('$index','$titre');";
+				$Sql .= "INSERT INTO Prefers (id,titre) VALUES ('$index','$titre');";
 			}
 		}	
+		
+		//table users pour connexion
+		$Sql .= 'CREATE TABLE users (id INT(11) PRIMARY KEY AUTO_INCREMENT,identifiant VARCHAR(255) UNIQUE NOT NULL, password VARCHAR(255) NOT NULL, nom VARCHAR(255), prenom VARCHAR(255), sexe VARCHAR(255),AdrElectonique VARCHAR(255), DateNaissance DATE, AdressePostale VARCHAR(255), telephone VARCHAR(255));' ;
 		
 		//supprimer denriere ; pour eviter query null
 		$Sql = substr($Sql,0,strlen($Sql)-1); 
@@ -129,6 +132,7 @@ class SqlDB{
 			{ 
 				echo "\t".$nuplet2["nom"]."\n";
 			}
+	
 	}
 
 	
