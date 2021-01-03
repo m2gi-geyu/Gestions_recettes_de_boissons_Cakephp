@@ -90,6 +90,21 @@ class SrcController extends AppController
 
         return $this->redirect(['action' => 'index']);
 	}
+	
+	/*
+	 * deplacer à page hierarchie
+	 */
+	public function hierarchie(){
+		
+		$redirect = $this->request->getQuery('redirect', [
+				'controller' => 'hierarchie',
+				'action' => 'index',
+			]);
+
+			return $this->redirect($redirect);
+
+        return $this->redirect(['action' => 'index']);
+	}
 
 }
 ?>

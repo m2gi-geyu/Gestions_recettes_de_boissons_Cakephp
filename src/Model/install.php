@@ -51,46 +51,63 @@ class install{
 		include 'Donnees.inc.php';
 		
 		//create table
-		$Sql .= 'CREATE TABLE sous_categorie (nom VARCHAR(255) NOT NULL,sous VARCHAR(255) NOT NULL);' ;
-		$Sql .= 'CREATE TABLE super_categorie (nom VARCHAR(255) NOT NULL,super VARCHAR(255) NOT NULL);' ;
+		$Sql .= 'CREATE TABLE Hierarchie (id INT PRIMARY KEY AUTO_INCREMENT ,nom VARCHAR(255) NOT NULL,sous VARCHAR(255), super VARCHAR(255));';
 		
 		//array Hierarchie
 		foreach($Hierarchie as $categorie=>$contenu_categorie){
+			
+			// supprimer " ' " commme " Partie d'orange " pour eviter bug
+			$Content1 = addslashes($categorie);
+			if ( get_magic_quotes_gpc ()){  // s'il n'y a pas de "'" dedans
+				$Content1 = stripslashes ( $Content1 ); 
+			}
+			
 			//s'il existe sous-categorie dans ce array
 			if(array_key_exists('sous-categorie', $contenu_categorie)){				
 				foreach($contenu_categorie['sous-categorie'] as $numero=>$sous_categorie)
 				{
 					// supprimer " ' " commme " Partie d'orange " pour eviter bug
-					$Content1 = addslashes($categorie);
-					if ( get_magic_quotes_gpc ()){  // s'il n'y a pas de "'" dedans
-					   $Content1 = stripslashes ( $Content1 ); 
-					}
 					$Content2 = addslashes($sous_categorie);
 					if ( get_magic_quotes_gpc ()){  // s'il n'y a pas de "'" dedans
-					   $Content1 = stripslashes ( $Content2 ); 
+						$Content2 = stripslashes ( $Content2 ); 
 					}
 					
-					//inserer table
-					$Sql .= "INSERT INTO sous_categorie VALUES ('$Content1','$Content2');";
+					if(array_key_exists('super-categorie', $contenu_categorie)){
+						foreach($contenu_categorie['super-categorie'] as $numero=>$super_categorie)
+						{
+							// supprimer " ' " commme " Partie d'orange " pour eviter bug
+							$Content3 = addslashes($super_categorie);
+							if ( get_magic_quotes_gpc ()){  // s'il n'y a pas de "'" dedans
+							   $Content3 = stripslashes ( $Content3 ); 
+							}
+							
+							//inserer table
+							$Sql .= "INSERT INTO Hierarchie(nom,sous,super) VALUES ('$Content1','$Content2','$Content3');";
+						}
+					}else{
+							
+							//inserer table sans super_categorie
+							$Sql .= "INSERT INTO Hierarchie(nom,sous) VALUES ('$Content1','$Content2');";
+					}
 				}
 			}
-			
-			//s'il existe super-categorie dans ce array
-			if(array_key_exists('super-categorie', $contenu_categorie)){
-				foreach($contenu_categorie['super-categorie'] as $numero=>$super_categorie)
-				{
-					// supprimer " ' " commme " Partie d'orange " pour eviter bug
-					$Content1 = addslashes($categorie);
-					if ( get_magic_quotes_gpc ()){  // s'il n'y a pas de "'" dedans
-					   $Content1 = stripslashes ( $Content1 ); 
+			else{
+				if(array_key_exists('super-categorie', $contenu_categorie)){
+					foreach($contenu_categorie['super-categorie'] as $numero=>$super_categorie)
+					{
+						// supprimer " ' " commme " Partie d'orange " pour eviter bug
+						$Content3 = addslashes($super_categorie);
+						if ( get_magic_quotes_gpc ()){  // s'il n'y a pas de "'" dedans
+							$Content3 = stripslashes ( $Content3 ); 
+						}
+							
+						//inserer table
+						$Sql .= "INSERT INTO Hierarchie(nom,super) VALUES ('$Content1','$Content3');";
 					}
-					$Content2 = addslashes($super_categorie);
-					if ( get_magic_quotes_gpc ()){  // s'il n'y a pas de "'" dedans
-					   $Content1 = stripslashes ( $Content2 ); 
-					}
-					
-					//inserer table
-					$Sql .= "INSERT INTO super_categorie VALUES ('$Content1','$Content2');";
+				}else{
+							
+					//inserer table sans super_categorie
+					$Sql .= "INSERT INTO Hierarchie(nom) VALUES ('$Content1');";
 				}
 			}
 		}	
@@ -127,20 +144,12 @@ class install{
 		//supprimer denriere ; pour eviter query null
 		$Sql = substr($Sql,0,strlen($Sql)-1); 
 				
-		//test
+		//tester et executer
 		foreach(explode(';',$Sql) as $Requete) Test($mysqli,$Requete);
-
-		$query2 = "SELECT * FROM sous_categorie";
-		
-		$resultat2 = $mysqli->query($query2);
 
 		mysqli_close($mysqli);
 
-		while($nuplet2 = $resultat2->fetch_assoc())
-			{ 
-				echo "\t".$nuplet2["nom"]."\n";
-			}
-	
+
 	}
 
 	
@@ -155,16 +164,18 @@ class install{
 		
 		foreach(explode(';',$Sql) as $Requete) Test($mysqli,$Requete);		
 		
-		$query = "SELECT * FROM sous_categorie";
+		$query = "SELECT * FROM Hierarchie";
 				
 		$resultat = $mysqli->query($query);
 
 		mysqli_close($mysqli);
 		
 		while($nuplet = $resultat->fetch_assoc())
-			{ 
-				echo "\t".$nuplet["nom"]."\n";
-			}
+		{ 
+			echo "\t".$nuplet["nom"]."\n";
+		}
+		
+		return $resultat;
 	}
 }
 ?>

@@ -19,13 +19,13 @@
                 <?php
                     echo $this->Form->control('identifiant');
                     echo $this->Form->control('password');
-                    echo $this->Form->control('nom');
-                    echo $this->Form->control('prenom');
-                    echo $this->Form->control('sexe');
-                    echo $this->Form->control('AdrElectonique');
+                    echo $this->Form->control('nom', ['empty' => true]);
+                    echo $this->Form->control('prenom', ['empty' => true]);
+                    echo $this->Form->control('sexe', ['empty' => true]);
+                    echo $this->Form->control('AdrElectonique', ['empty' => true]);
                     echo $this->Form->control('DateNaissance', ['empty' => true]);
-                    echo $this->Form->control('AdressePostale');
-                    echo $this->Form->control('telephone');
+                    echo $this->Form->control('AdressePostale', ['empty' => true]);
+                    echo $this->Form->control('telephone', ['empty' => true]);
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>
