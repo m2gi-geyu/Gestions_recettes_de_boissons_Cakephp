@@ -60,6 +60,36 @@ class SrcController extends AppController
 
         return $this->redirect(['action' => 'index']);
 	}
+	
+	/*
+	 * deplacer à page recettes
+	 */
+	public function recettes(){
+		
+		$redirect = $this->request->getQuery('redirect', [
+				'controller' => 'recettes',
+				'action' => 'index',
+			]);
+
+			return $this->redirect($redirect);
+
+        return $this->redirect(['action' => 'index']);
+	}
+	
+	/*
+	 * deplacer à page prefers
+	 */
+	public function prefers(){
+		
+		$redirect = $this->request->getQuery('redirect', [
+				'controller' => 'prefers',
+				'action' => 'index',
+			]);
+
+			return $this->redirect($redirect);
+
+        return $this->redirect(['action' => 'index']);
+	}
 
 }
 ?>
