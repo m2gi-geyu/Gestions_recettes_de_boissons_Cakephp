@@ -52,6 +52,7 @@ class install{
 		
 		//create table
 		$Sql .= 'CREATE TABLE Hierarchie (id INT PRIMARY KEY AUTO_INCREMENT ,nom VARCHAR(255) NOT NULL,sous VARCHAR(255), super VARCHAR(255));';
+		$Sql .= 'CREATE TABLE HierarchieResearch(id INT PRIMARY KEY AUTO_INCREMENT,nom VARCHAR(255) NOT NULL);' ;
 		
 		//array Hierarchie
 		foreach($Hierarchie as $categorie=>$contenu_categorie){
@@ -116,6 +117,7 @@ class install{
 		$Sql .= 'CREATE TABLE Recettes (id INT NOT NULL,titre VARCHAR(255) NOT NULL,ingredients TEXT NOT NULL,preparation TEXT );' ;
 		$Sql .= 'CREATE TABLE Prefers (id INT  NOT NULL,titre VARCHAR(255) NOT NULL,idRecette INT);' ;
 		$Sql .= 'CREATE TABLE SousRecettes (idRecette INT NOT NULL,pre_index INT NOT NULL,nom  VARCHAR(255));' ;
+		
 
 		//array Recettes
 		$id=0;
@@ -176,6 +178,28 @@ class install{
 		}
 		
 		return $resultat;
+	}
+	
+	// select from BD
+	public function DeleteSearch()
+	{ 
+		//connexion de sql
+		$mysqli=mysqli_connect('127.0.0.1', 'root', '') or die("Erreur de connexion");
+		$base="boisson_db";
+		$Sql="
+			USE $base";
+		
+		foreach(explode(';',$Sql) as $Requete) Test($mysqli,$Requete);		
+		
+		//$query = "DROP TABLE HierarchieResearch;";
+		$query = 'delete From HierarchieResearch;' ;
+		$query .= "INSERT INTO HierarchieResearch VALUES ('441','Aliment')";
+		
+		foreach(explode(';',$query) as $Requete) Test($mysqli,$Requete);
+		//$resultat = $mysqli->query($query);
+
+		mysqli_close($mysqli);
+		
 	}
 }
 ?>

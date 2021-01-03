@@ -9,7 +9,9 @@ class HierarchieTable extends Table
 {
     public function initialize(array $config): void
     {
+		$this->setTable('hierarchie');
 		$this->addBehavior('Timestamp');
+		$this->setPrimaryKey('id');
     }
 }
 
