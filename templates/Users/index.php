@@ -6,6 +6,7 @@
 ?>
 <div class="users index content">
     <?= $this->Html->link(__('New User'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->Form->postButton(__('user interface'), ['action' => 'src']) ?>
     <h3><?= __('Users') ?></h3>
     <div class="table-responsive">
         <table>

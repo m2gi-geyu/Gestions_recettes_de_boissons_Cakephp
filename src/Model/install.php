@@ -115,7 +115,7 @@ class install{
 	
 		//create table
 		$Sql .= 'CREATE TABLE Recettes (id INT NOT NULL,titre VARCHAR(255) NOT NULL,ingredients TEXT NOT NULL,preparation TEXT );' ;
-		$Sql .= 'CREATE TABLE Prefers (id INT  NOT NULL,titre VARCHAR(255) NOT NULL,idRecette INT);' ;
+		$Sql .= 'CREATE TABLE Prefers (id INT  NOT NULL,titre VARCHAR(255) NOT NULL,idRecette INT,idUser INT);' ;
 		$Sql .= 'CREATE TABLE SousRecettes (idRecette INT NOT NULL,pre_index INT NOT NULL,nom  VARCHAR(255));' ;
 		
 

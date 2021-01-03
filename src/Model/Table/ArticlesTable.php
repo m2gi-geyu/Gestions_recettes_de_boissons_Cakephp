@@ -26,17 +26,6 @@ class ArticlesTable extends Table
     }
 
 
-/*public function validationDefault(Validator $validator):Cake\Validation\Validator
-{
-    $validator
-        ->notEmpty('title')
-        ->minLength('title', 10)
-        ->maxLength('title', 255)
 
-        ->notEmpty('body')
-        ->minLength('body', 10);
-
-    return $validator;
-}*/
 }
 
