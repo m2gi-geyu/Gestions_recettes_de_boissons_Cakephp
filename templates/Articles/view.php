@@ -1,7 +1,7 @@
 
-<h1><?= h($Recettes->title) ?></h1>
-<p><?= h($Recettes->ingredients) ?></p>
-<p><?= h($Recettes->preparation) ?></p>
-//<p><?= h($Recettes->index) ?></p>
+<!-- File: templates/Articles/view.php -->
 
-<p><?= $this->Html->link('Retourner', ['action' => 'index']) ?></p>
+<h1><?= h($article->title) ?></h1>
+<p><?= h($article->body) ?></p>
+<p><small>Created: <?= $article->created->format(DATE_RFC850) ?></small></p>
+<p><?= $this->Html->link('Edit', ['action' => 'edit', $article->slug]) ?></p>

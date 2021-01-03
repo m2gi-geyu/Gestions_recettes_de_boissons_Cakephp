@@ -3,10 +3,9 @@ namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
 
-class Recette extends Entity
+class SousRecette extends Entity
 {
     protected $_accessible = [
-        'id' => true,
-        'titre' => true,
+        'idRecette' => true,
     ];
 }
