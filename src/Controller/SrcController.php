@@ -26,14 +26,12 @@ class SrcController extends AppController
 	 * page basic
 	 */
     public function index(){
-
     }
 	
 	/*
 	 * deplacer à page login
 	 */
 	public function connexion(){
-		
 		$redirect = $this->request->getQuery('redirect', [
 				'controller' => 'Users',
 				'action' => 'login',
@@ -104,6 +102,17 @@ class SrcController extends AppController
 			return $this->redirect($redirect);
 
         return $this->redirect(['action' => 'index']);
+	}
+
+	public function user(){
+		$redirect = $this->request->getQuery('redirect', [
+			'controller' => 'users',
+			'action' => 'index',
+		]);
+
+		return $this->redirect($redirect);
+
+	return $this->redirect(['action' => 'index']);
 	}
 
 }

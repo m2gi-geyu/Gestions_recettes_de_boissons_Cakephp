@@ -42,7 +42,6 @@ class UsersController extends AppController
 				'controller' => 'Src',
 				'action' => 'index',
 			]);
-
 			return $this->redirect($redirect);
 		}
 		// afficher une erreur si l'utilisateur a soumis le formulaire
@@ -140,5 +139,14 @@ class UsersController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    public function src(){
+        $redirect = $this->request->getQuery('redirect', [
+			'controller' => 'src',
+			'action' => 'index',
+		]);
+
+		return $this->redirect($redirect);
     }
 }

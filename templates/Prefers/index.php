@@ -1,5 +1,10 @@
 <h1>Recettes Préférées</h1>
-<div class="recette table ">
+<div class="prefer table ">
+    <aside class="column">  
+        <div class="side-nav">
+            <p><?= $this->Html->link('Retourner', ['action' => 'retourner']) ?></p>
+        </div>
+    </aside>
     <table>
         <tr>
             <th>ID</th>

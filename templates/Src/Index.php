@@ -19,6 +19,8 @@
 	<?= $this->Form->postButton(__('recettes'), ['action' => 'recettes']) ?>
 	<?= $this->Form->postButton(__('prefers'), ['action' => 'prefers']) ?>
 	<?= $this->Form->postButton(__('hierarchi'), ['action' => 'hierarchie']) ?>
+	<?= $this->Form->postButton(__('user'), ['action' => 'user']) ?>
+
 
 	
 	<body>

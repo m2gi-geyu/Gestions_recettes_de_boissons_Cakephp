@@ -1,5 +1,11 @@
 <h1>Recettes</h1>
+
 <div class="recette table ">
+    <aside class="column">  
+        <div class="side-nav">
+            <p><?= $this->Html->link('Retourner', ['action' => 'retourner']) ?></p>
+        </div>
+    </aside>
     <table>
         <tr>
             <th>ID</th>
@@ -37,4 +43,6 @@
         </ul>
         <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
     </div>
+    
+
 </div>
