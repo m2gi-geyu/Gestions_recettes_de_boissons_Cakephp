@@ -4,6 +4,19 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 	</head>
 	
+	
+	<?php
+	$core1="test";
+	echo $core1;
+	?>	
+	
+
+	<?= $this->Form->postButton(__('installer_Donnees'), ['action' => 'installer'], ['confirm' => __('il y a besoinde 3 minutes pour installer # {0}?')]) ?>
+	<?= $this->Form->postButton(__('login'), ['action' => 'connexion']) ?>
+	<?= $this->Form->postButton(__('logout'), ['action' => 'deconnexion'], ['confirm' => __('login out maintenant # {0}?')]) ?>
+
+
+	
 	<body>
 		<form name="formulaire">
 			<select id="Ingredient" name="ingredients" onChange="choixIngredient()">

@@ -58,7 +58,7 @@ class AppController extends Controller
 		parent::beforeFilter($event);
 		
 		// Ajoutez la méthode beforeFilter au UsersController
-		$this->Authentication->addUnauthenticatedActions(['login','vue','index']);
+		$this->Authentication->addUnauthenticatedActions(['login','vue','index','installer']);
 	}
 	
 

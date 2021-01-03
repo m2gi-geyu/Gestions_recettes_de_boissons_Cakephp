@@ -1,10 +1,9 @@
 <?php // la base de donnees, les tables et insere les donnees 
 //tester et executer
 
-namespace App\Model;
-
+namespace App\Controller;
+use App\Controller\AppController;
 use Cake\Core\App;
-
 function Test($link,$requete)
 	{ 
 		//init execute time
@@ -31,7 +30,7 @@ function check_str($str){
 	return $res ? TRUE : FALSE;
 }
 	
-class install{
+class install extends AppModel{
 
 
 
