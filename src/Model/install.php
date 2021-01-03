@@ -15,7 +15,7 @@ function Test($link,$requete)
 function replace_specialChar($strParam){
 	if(check_str($strParam)){
 		$regex = "/\/|\～|\，|\。|\！|\？|\“|\”|\【|\】|\『|\』|\：|\；|\《|\》|\’|\‘|\ |\·|\~|\!|\@|\#|\\$|\%|\^|\&|\*|\(|\)|\_|\+|\{|\}|\:|\<|\>|\?|\[|\]|\,|\.|\/|\;|\'|\`|\-|\=|\\\|\|/";
-		return preg_replace($regex,"",$strParam);
+		return preg_replace($regex," ",$strParam);
 	}
 	return $strParam;
 }
@@ -91,25 +91,27 @@ class SqlDB{
 		}	
 	
 		//create table
-		$Sql .= 'CREATE TABLE Recettes (id INT NOT NULL,titre VARCHAR(255) NOT NULL,ingredients VARCHAR(255) NOT NULL,preparation TEXT ,pre_index INT NOT NULL,sous_recettes  VARCHAR(255) NOT NULL );' ;
-		$Sql .= 'CREATE TABLE Prefers (id INT NOT NULL,titre VARCHAR(255) NOT NULL,idRecette INT);' ;
-		
+		$Sql .= 'CREATE TABLE Recettes (id INT NOT NULL,titre VARCHAR(255) NOT NULL,ingredients TEXT NOT NULL,preparation TEXT );' ;
+		$Sql .= 'CREATE TABLE Prefers (id INT  NOT NULL,titre VARCHAR(255) NOT NULL,idRecette INT);' ;
+		$Sql .= 'CREATE TABLE SousRecettes (idRecette INT NOT NULL,pre_index INT NOT NULL,nom  VARCHAR(255));' ;
+
 		//array Recettes
+		$id=0;
 		foreach($Recettes as $index=>$contenu_recettes){
+			$titre =mysqli_real_escape_string($mysqli,$contenu_recettes['titre']);
+			$ingredients=replace_specialChar($contenu_recettes['ingredients']);
+			$preparation=replace_specialChar($contenu_recettes['preparation']);
+			$Sql .= "INSERT INTO Recettes VALUES ('$id','$titre','$ingredients','$preparation');";
+			$id++;
 			foreach($contenu_recettes['index'] as $pre_index=>$sous_recettes)
 			{
-				// supprimer " ' " commme " Partie d'orange " pour eviter bug
-				$titre =mysqli_real_escape_string($mysqli,$contenu_recettes['titre']);
-				$ingredients=replace_specialChar($contenu_recettes['ingredients']);
-				$preparation=replace_specialChar($contenu_recettes['preparation']);
 				$sous_recettes = addslashes($sous_recettes);
 				if ( get_magic_quotes_gpc ()){  // s'il n'y a pas de "'" dedans
 					  $$sous_recettes = stripslashes ( $sous_recettes ); 
 				}
 				
 				//inserer table
-				$Sql .= "INSERT INTO Recettes VALUES ('$index','$titre','$ingredients','$preparation','$pre_index','$sous_recettes');";
-				$Sql .= "INSERT INTO Prefers (id,titre) VALUES ('$index','$titre');";
+				$Sql .= "INSERT INTO SousRecettes VALUES ('$index','$pre_index','$sous_recettes');";
 			}
 		}	
 		

@@ -2,6 +2,8 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\ORM\TableRegistry;
+use Cake\ORM\Query;
 
 class RecettesController extends AppController
 {
@@ -19,85 +21,38 @@ class RecettesController extends AppController
         $this->set(compact('recettes'));
     }
 
-    public function view($slug)
+    public function view($id)
     {
-        $recette = $this->recettes->findBySlug($slug)->firstOrFail();
-        $this->set(compact('recette'));
+        $recette = $this->Recettes->find()->where(['id'=>$id])->first();      
+        $sousRecettes = TableRegistry::get('sousRecettes');
+        $query = $sousRecettes->find('all')->where(['idRecette'=>$id])->all();   
+        $this->set('recette',$recette);
+        $this->set('sousRecettes',$query);
     }
 
-    public function add()
+    public function add($id)
     {
-        $recette = $this->recettes->newEmptyEntity();
-        if ($this->request->is('post')) {
-            $recette = $this->recettes->patchEntity($recette, $this->request->getData());
-
-            // Hardcoding the user_id is temporary, and will be removed later
-            // when we build authentication out.
-            $recette->user_id = 1;
-
-            if ($this->recettes->save($recette)) {
-                $this->Flash->success(__('Your recette has been saved.'));
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('Unable to add your recette.'));
+        $this->request->allowMethod(['post', 'add']);
+        $prefers = TableRegistry::get('prefers');
+        $recette=$this->Recettes->find()->where(['id'=>$id])->first();
+        $prefer=$prefers->newEmptyEntity();
+        $query = $prefers->find('all')->where(['idRecette'=>$id])->all();  
+        $preferlast = $prefers->find('all')->last(); 
+        if(empty($query)){
+            $this->Flash->error(__('il est déjà dans recettes préférées'));
+            return $this->redirect(['action' => 'index']);
         }
-        $this->set('recette', $recette);
-    }
-
-    public function AfficherRecette(){
-        // partie de sql
-		require 'Model/install.php';
-
-		$sql=new SqlDB();
-		$sql->RecettesSql();
-		$sql->Test2();
-		
-		$prem_choix="";
-		
-		//utilisation de fichie Donnees_inc
-		include 'Donnees.inc.php';
-					
-		//option de premier categorie
-		foreach($Hierarchie as $categorie=>$sous_categorie){
-			$prem_choix .= '<option value="'.$categorie.'">'.$categorie.'</option>';
+        $prefer->id=$recette->id+1;
+        $prefer->titre=$recette->titre;
+        $prefer->idRecette=$recette->id;
+        if ($prefers->save($prefer)) {
+            $this->Flash->success(__(' Ajoute réussi.'));
+            $query=$prefers->find()->all();
+            $this->set('prefers',$query);
+            return $this->redirect(['action' => 'index']);
         }
-        
 
-	}
     }
 
 }
 ?>
-
-	
-}
-
-/**
- * Controleur
- */
-class Controleur
-{
-    protected $_controller;
-    protected $_action;
-    protected $_view;
-
-    // construct de controleur
-    public function __construct($controller, $action)
-    {
-        $this->_controller = $controller;
-        $this->_action = $action;
-        $this->_view = new View($controller, $action);
-    }
-
-    // assigner value
-    public function assign($name, $value)
-    {
-        $this->_view->assign($name, $value);
-    }
-
-    // mettre a jour view
-    public function render()
-    {
-        $this->_view->render();
-    }
-}

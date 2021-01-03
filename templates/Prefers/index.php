@@ -1,27 +1,31 @@
-<h1>Recettes</h1>
+<h1>Recettes Préférées</h1>
 <div class="recette table ">
     <table>
         <tr>
             <th>ID</th>
             <th>Titre</th>
+            <th>IdRecette</th>
             <th>Action</th>
         </tr>
         
-        <div class="recettes">
-            <?php  foreach ($recettes as $recette): ?>
+        <div class="prefers">
+            <?php  foreach ($prefers as $prefer): ?>
                 <tr>
                     <td>
-                        <?= h($recette->id) ?>
+                        <?= h($prefer->id) ?>
                     </td>
                     <td>
-                        <?= $this->Html->link($recette->titre, ['action' => 'view', $recette->id]) ?>
+                        <?= $this->Html->link($prefer->titre, ['action' => 'view', $prefer->idRecette]) ?>
                     </td>
                     <td>
-                        <?= $this->Form->postLink(
-                            'Ajouter Recette Préférée',
-                            ['action' => 'add', $recette->id],
-                            ['confirm' => 'Are you sure?'])
-                        ?>
+                          <?= h($prefer->idRecette) ?>
+                    </td>
+                    <td>
+                    <?= $this->Form->postLink(
+                        'Delete',
+                        ['action' => 'delete', $prefer->id],
+                        ['confirm' => 'Are you sure?'])
+                    ?>
                     </td>
                 </tr>
         </div>
